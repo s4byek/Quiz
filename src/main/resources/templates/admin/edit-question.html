@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/head :: head(title='Редактировать')"></head>
+<body>
+<div th:replace="fragments/navbar :: navbar"></div>
+<main class="container">
+    <h1>Редактировать вопрос</h1>
+    <form th:action="@{/admin/edit-question/{id}(id=${question.id})}" method="post" th:object="${question}">
+        <input type="text" th:field="*{text}" placeholder="Текст вопроса" required>
+        <select th:field="*{category}" required>
+            <option value="">Категория</option>
+            <option th:each="c : ${categories}" th:value="${c}" th:text="${c.displayName}"></option>
+        </select>
+        <select th:field="*{difficulty}" required>
+            <option value="">Сложность</option>
+            <option th:each="d : ${difficulties}" th:value="${d}" th:text="${d}"></option>
+        </select>
+        <input type="text" th:field="*{answers[0]}" placeholder="Ответ 1" required>
+        <input type="text" th:field="*{answers[1]}" placeholder="Ответ 2" required>
+        <input type="text" th:field="*{answers[2]}" placeholder="Ответ 3" required>
+        <input type="text" th:field="*{answers[3]}" placeholder="Ответ 4" required>
+        <select th:field="*{correctAnswerIndex}" required>
+            <option value="">Правильный ответ</option>
+            <option value="0">Ответ 1</option>
+            <option value="1">Ответ 2</option>
+            <option value="2">Ответ 3</option>
+            <option value="3">Ответ 4</option>
+        </select>
+        <button type="submit">Сохранить</button>
+        <a href="/admin/questions" role="button" class="secondary">Отмена</a>
+    </form>
+</main>
+<footer th:replace="fragments/footer :: footer"></footer>
+</body>
+</html>

@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/head :: head(title='Результат')"></head>
+<body>
+<div th:replace="fragments/navbar :: navbar"></div>
+
+<main class="container">
+    <article style="text-align: center;">
+        <hgroup>
+            <h1 th:text="${result.correct ? '✓ Правильно!' : '✗ Неправильно'}"></h1>
+            <p th:text="${result.correct ? 'Отличная работа!' : 'Не расстраивайтесь, попробуйте ещё'}"></p>
+        </hgroup>
+
+        <div class="grid">
+            <div>
+                <h6>Баллы</h6>
+                <h2 th:text="'+' + ${result.pointsEarned}"></h2>
+            </div>
+            <div>
+                <h6>Опыт</h6>
+                <h2 th:text="'+' + ${result.experienceGained}"></h2>
+            </div>
+            <div>
+                <h6>Уровень</h6>
+                <h2 th:text="${result.newLevel}"></h2>
+            </div>
+        </div>
+
+        <p th:unless="${result.correct}">
+            <mark><strong>Правильный ответ:</strong> <span th:text="${result.correctAnswerText}"></span></mark>
+        </p>
+
+            <summary>Статистика</summary>
+            <table>
+                <tbody>
+                <tr>
+                    <td><strong>Всего рейтинга</strong></td>
+                    <td th:text="${result.newRating}"></td>
+                </tr>
+                <tr>
+                    <td><strong>Всего опыта</strong></td>
+                    <td th:text="${result.newExperience}"></td>
+                </tr>
+                </tbody>
+            </table>
+        <div class="grid">
+            <a href="/" role="button">Следующий вопрос</a>
+            <a href="/profile" role="button" class="secondary">Профиль</a>
+        </div>
+    </article>
+</main>
+
+<footer th:replace="fragments/footer :: footer"></footer>
+</body>
+</html>

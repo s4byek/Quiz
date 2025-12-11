@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/head :: head(title='Вопросы')"></head>
+<body>
+<div th:replace="fragments/navbar :: navbar"></div>
+<main class="container">
+    <h1>Управление вопросами</h1>
+    <a href="/admin/add-question" role="button">Добавить</a>
+    <table>
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Текст</th>
+            <th>Категория</th>
+            <th>Сложность</th>
+            <th></th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="q : ${questions}">
+            <td th:text="${q.id}"></td>
+            <td th:text="${q.text}"></td>
+            <td th:text="${q.category.displayName}"></td>
+            <td th:text="${q.difficulty}"></td>
+            <td>
+                <a th:href="@{/admin/edit-question/{id}(id=${q.id})}">изменить</a>
+                <form th:action="@{/admin/delete-question/{id}(id=${q.id})}" method="post" style="display:inline">
+                    <button type="submit" class="secondary">✗</button>
+                </form>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</main>
+<footer th:replace="fragments/footer :: footer"></footer>
+</body>
+</html>

@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+<nav th:fragment="navbar" class="container-fluid">
+    <ul>
+        <li><strong>Quiz App</strong></li>
+    </ul>
+    <ul>
+        <li><a href="/" th:if="${session.userId}">Главная</a></li>
+        <li><a href="/profile" th:if="${session.userId}">Профиль</a></li>
+        <li><a href="/leaders" th:if="${session.userId}">Лидеры</a></li>
+        <li><a href="/admin" th:if="${session.userId != null and session.userRole == 'ADMIN'}">Админка</a></li>
+        <li><a href="/auth/logout" th:if="${session.userId}" role="button" class="secondary">Выход</a></li>
+        <li><a href="/auth/login" th:unless="${session.userId}" role="button">Вход</a></li>
+    </ul>
+</nav>
+</body>
+</html>

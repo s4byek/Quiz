@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/head :: head"></head>
+<body>
+<div th:replace="fragments/navbar :: navbar"></div>
+<main class="container">
+    <h2>Лидеры</h2>
+
+    <div th:each="leader : ${leaders}" style="border-bottom: 1px solid #ddd; padding: 0.7rem 0;">
+        <div class="grid">
+            <div>
+                <strong>
+                    <span th:if="${leader.position == 1}">🥇</span>
+                    <span th:if="${leader.position == 2}">🥈</span>
+                    <span th:if="${leader.position == 3}">🥉</span>
+                    <span th:unless="${leader.position <= 3}" th:text="${leader.position + '.'}"></span>
+                    <span th:text="${leader.username}"></span>
+                </strong>
+                <span th:if="${leader.currentUser}"> (вы)</span>
+            </div>
+            <div style="text-align: right;">
+                <small>
+                    <span th:text="${leader.rating}"></span> рейтинг |
+                    <span th:text="${leader.level}"></span> уровень
+                </small>
+            </div>
+        </div>
+    </div>
+
+    <div th:if="${currentUser}">
+        <h4>Ваша позиция</h4>
+        <p>
+            Место: <strong th:text="${currentUser.position}"></strong> |
+            Рейтинг: <strong th:text="${currentUser.rating}"></strong> |
+            Уровень: <strong th:text="${currentUser.level}"></strong>
+        </p>
+    </div>
+</main>
+<footer th:replace="fragments/footer :: footer"></footer>
+</body>
+</html>

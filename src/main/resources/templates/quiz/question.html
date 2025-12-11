@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/head :: head"></head>
+<body>
+<div th:replace="fragments/navbar :: navbar"></div>
+<main class="container">
+    <p>
+        <kbd th:text="${question.category.displayName}"></kbd>
+        <kbd th:text="${question.difficulty}"></kbd>
+    </p>
+
+    <h3 th:text="${question.text}"></h3>
+
+    <form action="/quiz/submit" method="post">
+        <input type="hidden" name="questionId" th:value="${question.id}">
+        <fieldset>
+            <label th:each="answer : ${question.answers}">
+                <input type="radio" name="answerId" th:value="${answer.id}" required>
+                <span th:text="${answer.text}"></span>
+            </label>
+        </fieldset>
+        <button type="submit">Ответить</button>
+    </form>
+
+    <p>
+        <small>
+            Списано: <span th:text="${stake}"></span> |
+            При правильном ответе: <span th:text="'+' + ${reward}"></span> рейтинга,
+            <span th:text="'+' + ${experience}"></span> опыта
+        </small>
+    </p>
+</main>
+<footer th:replace="fragments/footer :: footer"></footer>
+</body>
+</html>

@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/head :: head"></head>
+<body>
+<div th:replace="fragments/navbar :: navbar"></div>
+<main class="container">
+    <h2 th:text="${stats.username}"></h2>
+
+    <div class="grid">
+        <div>
+            <small>Рейтинг</small>
+            <h3 th:text="${stats.rating}"></h3>
+        </div>
+        <div>
+            <small>Уровень</small>
+            <h3 th:text="${stats.level}"></h3>
+        </div>
+        <div>
+            <small>Опыт</small>
+            <h3 th:text="${stats.experience}"></h3>
+        </div>
+    </div>
+
+    <div class="grid">
+        <div>
+            <small>Правильных</small>
+            <h3 th:text="${stats.correctAnswers}"></h3>
+        </div>
+        <div>
+            <small>Всего</small>
+            <h3 th:text="${stats.totalAnswers}"></h3>
+        </div>
+        <div>
+            <small>Точность</small>
+            <h3><span th:text="${stats.accuracy}"></span>%</h3>
+        </div>
+    </div>
+    <div th:if="${categoryStats != null and !#lists.isEmpty(categoryStats)}">
+        <h3>Статистика по категориям</h3>
+        <div th:each="cs : ${categoryStats}" style="border-bottom: 1px solid #ccc; padding: 0.5rem 0;">
+            <strong th:text="${cs.category.displayName}"></strong><br>
+            <small>
+                Всего ответов: <span th:text="${cs.totalAnswers}"></span> |
+                Правильных: <span th:text="${cs.correctAnswers}"></span> |
+                Точность:
+                <span th:text="${#numbers.formatDecimal(cs.accuracy, 1, 1)}"></span>% |
+                Средняя смена рейтинга:
+                <span th:text="${#numbers.formatDecimal(cs.avgRatingChange, 1, 2)}"></span>
+            </small>
+        </div>
+    </div>
+
+    <div th:if="${!#lists.isEmpty(history)}">
+        <p>
+        <h3>История игр</h3>
+        <div th:each="item : ${history}" style="border-bottom: 1px solid #ccc; padding: 0.5rem 0;">
+            <strong th:text="${item.questionText}"></strong><br>
+            <small>
+                <span th:text="${item.userAnswerText}"></span>
+                <span th:if="${item.correct}">✓</span>
+                <span th:unless="${item.correct}">✗</span> |
+                Баллы: <span th:text="${item.ratingChange}"></span> |
+                Опыт: <span th:text="${item.experienceGained}"></span> |
+                <span th:text="${#temporals.format(item.datePlayed, 'dd.MM HH:mm')}"></span>
+            </small>
+        </div>
+    </div>
+</main>
+<footer th:replace="fragments/footer :: footer"></footer>
+</body>
+</html>

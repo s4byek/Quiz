@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/head :: head"></head>
+<body>
+<div th:replace="fragments/navbar :: navbar"></div>
+<main class="container">
+    <h2>Викторина</h2>
+    <p th:if="${error}"><mark th:text="${error}"></mark></p>
+
+    <p><small>При входе списывается ставка. За правильный ответ получаете награду.</small></p>
+
+    <form action="/quiz/question" method="get">
+        <select name="category">
+            <option value="">Все категории</option>
+            <option th:each="cat : ${categories}" th:value="${cat}" th:text="${cat.displayName}"></option>
+        </select>
+
+        <select name="difficulty" required>
+            <option value="">Выберите сложность</option>
+            <option value="EASY">Легкий (ставка -10, награда +20, опыт +10)</option>
+            <option value="MEDIUM">Средний (ставка -20, награда +50, опыт +25)</option>
+            <option value="HARD">Сложный (ставка -35, награда +100, опыт +50)</option>
+        </select>
+
+        <button type="submit">Начать игру</button>
+    </form>
+</main>
+<footer th:replace="fragments/footer :: footer"></footer>
+</body>
+</html>
