@@ -29,10 +29,10 @@ public class LeaderboardController {
         List<LeaderboardDTO> topUsers = userService.getTopUsers(userId);
         model.addAttribute("leaders", topUsers);
 
-        // Проверяем, есть ли текущий пользователь в топ-10
+        // проверка на пристутвие в топ 10
         boolean inTop10 = topUsers.stream().anyMatch(LeaderboardDTO::isCurrentUser);
 
-        // Если нет в топ-10, показываем его отдельно
+        // Если нет показываем отдельно
         if (!inTop10) {
             LeaderboardDTO currentUser = userService.getCurrentUserPosition(userId);
             model.addAttribute("currentUser", currentUser);

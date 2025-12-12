@@ -26,8 +26,4 @@ public enum Difficulty {
     public int getExperience() {
         return experience;
     }
-
-    public int getNetProfit() {
-        return reward - stake;
-    }
 }

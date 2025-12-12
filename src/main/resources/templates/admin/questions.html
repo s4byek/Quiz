@@ -3,20 +3,31 @@
 <head th:replace="fragments/head :: head(title='Вопросы')"></head>
 <body>
 <div th:replace="fragments/navbar :: navbar"></div>
+
 <main class="container">
-    <h1>Управление вопросами</h1>
-    <a href="/admin/add-question" role="button">Добавить</a>
+
+    <form th:action="@{/admin/questions}" method="get" style="display:flex;gap:6px;align-items:center;">
+        <select name="category">
+            <option value="">категория</option>
+            <option th:each="c : ${categories}" th:value="${c}" th:text="${c.displayName}" th:selected="${c}==${selectedCategory}"></option>
+        </select>
+
+        <select name="difficulty">
+            <option value="">сложность</option>
+            <option th:each="d : ${difficulties}" th:value="${d}" th:text="${d}" th:selected="${d}==${selectedDifficulty}"></option>
+        </select>
+
+        <input type="search" name="search" th:value="${search}" placeholder="поиск">
+
+        <button>ок</button>
+        <a th:href="@{/admin/questions}">сброс</a>
+    </form>
+
+    <a th:href="@{/admin/add-question}" style="margin-left:auto;">добавить</a>
+
     <table>
-        <thead>
-        <tr>
-            <th>ID</th>
-            <th>Текст</th>
-            <th>Категория</th>
-            <th>Сложность</th>
-            <th></th>
-        </tr>
-        </thead>
-        <tbody>
+        <tr><th>ID</th><th>Текст</th><th>Кат.</th><th>Сложн.</th><th></th></tr>
+
         <tr th:each="q : ${questions}">
             <td th:text="${q.id}"></td>
             <td th:text="${q.text}"></td>
@@ -25,13 +36,16 @@
             <td>
                 <a th:href="@{/admin/edit-question/{id}(id=${q.id})}">изменить</a>
                 <form th:action="@{/admin/delete-question/{id}(id=${q.id})}" method="post" style="display:inline">
-                    <button type="submit" class="secondary">✗</button>
+                    <button type="submit">удалить</button>
                 </form>
             </td>
+            </td>
         </tr>
-        </tbody>
+
     </table>
+
 </main>
+
 <footer th:replace="fragments/footer :: footer"></footer>
 </body>
 </html>

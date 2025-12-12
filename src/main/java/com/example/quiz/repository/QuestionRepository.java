@@ -25,4 +25,17 @@ public interface QuestionRepository extends JpaRepository<Question, Long> {
 
     @Query(value = "SELECT * FROM questions ORDER BY RAND() LIMIT 1", nativeQuery = true)
     Optional<Question> findRandomQuestion();
+
+
+    //Для амдники
+    @Query("SELECT q FROM Question q " +
+            "WHERE (:category IS NULL OR q.category = :category) " +
+            "  AND (:difficulty IS NULL OR q.difficulty = :difficulty) " +
+            "  AND (:search IS NULL OR LOWER(q.text) LIKE LOWER(CONCAT('%', :search, '%'))) " +
+            "ORDER BY q.category, q.difficulty, q.id")
+    List<Question> findByFilters(
+            @Param("category") Category category,
+            @Param("difficulty") Difficulty difficulty,
+            @Param("search") String search
+    );
 }

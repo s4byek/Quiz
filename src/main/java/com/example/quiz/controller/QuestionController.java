@@ -8,7 +8,6 @@ import com.example.quiz.service.QuestionService;
 import com.example.quiz.service.UserService;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.ui.Model;
@@ -72,12 +71,5 @@ public class QuestionController {
             model.addAttribute("difficulties", Difficulty.values());
             return "home";
         }
-    }
-
-    // Новый endpoint для сброса отвеченных вопросов
-    @GetMapping("/reset-session")
-    public String resetSession(HttpSession session) {
-        session.removeAttribute("answeredQuestions");
-        return "redirect:/";
     }
 }

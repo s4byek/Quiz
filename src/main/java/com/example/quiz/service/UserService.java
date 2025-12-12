@@ -68,7 +68,6 @@ public class UserService {
         return userRepository.save(user);
     }
 
-    // Списание ставки при входе в вопрос
     @Transactional
     public User deductStake(Long userId, int stake) {
         User user = findById(userId);

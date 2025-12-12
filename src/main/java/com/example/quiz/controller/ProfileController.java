@@ -7,11 +7,8 @@ import com.example.quiz.service.ResultService;
 import com.example.quiz.service.StatsService;
 import com.example.quiz.service.UserService;
 import jakarta.servlet.http.HttpSession;
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-
 import org.springframework.stereotype.Controller;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.ui.Model;
 

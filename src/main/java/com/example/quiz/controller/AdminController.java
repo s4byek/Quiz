@@ -27,7 +27,6 @@ public class AdminController {
     private final AdminService adminService;
     private final UserService userService;
 
-    // Проверка прав администратора
     private boolean checkAdmin(HttpSession session, Model model) {
         Long userId = (Long) session.getAttribute("userId");
         if (userId == null) {
@@ -43,7 +42,6 @@ public class AdminController {
         return true;
     }
 
-    // Главная страница админки
     @GetMapping
     public String adminHome(HttpSession session, Model model) {
         if (!checkAdmin(session, model)) {
@@ -53,19 +51,36 @@ public class AdminController {
         return "redirect:/admin/questions";
     }
 
-    // Список всех вопросов
     @GetMapping("/questions")
-    public String listQuestions(HttpSession session, Model model) {
+    public String listQuestions(
+            @RequestParam(required = false) Category category,
+            @RequestParam(required = false) Difficulty difficulty,
+            @RequestParam(required = false) String search,
+            HttpSession session,
+            Model model) {
         if (!checkAdmin(session, model)) {
             return "redirect:/";
         }
 
-        List<QuestionListDTO> questions = adminService.getAllQuestions();
+        List<QuestionListDTO> questions;
+
+        if (category == null && difficulty == null && (search == null || search.isBlank())) {
+            questions = adminService.getAllQuestions();
+        } else {
+            questions = adminService.getAllQuestionsFiltered(category, difficulty, search);
+        }
+
         model.addAttribute("questions", questions);
+        model.addAttribute("selectedCategory", category);
+        model.addAttribute("selectedDifficulty", difficulty);
+        model.addAttribute("search", search);
+        model.addAttribute("categories", Category.values());
+        model.addAttribute("difficulties", Difficulty.values());
+
         return "admin/questions";
     }
 
-    // Форма добавления вопроса
+
     @GetMapping("/add-question")
     public String showAddForm(HttpSession session, Model model) {
         if (!checkAdmin(session, model)) {
@@ -81,7 +96,6 @@ public class AdminController {
         return "admin/add-question";
     }
 
-    // Сохранение нового вопроса
     @PostMapping("/add-question")
     public String addQuestion(@Valid @ModelAttribute("question") QuestionFormDTO dto,
                               BindingResult result,
@@ -101,7 +115,6 @@ public class AdminController {
         return "redirect:/admin/questions";
     }
 
-    // Форма редактирования вопроса
     @GetMapping("/edit-question/{id}")
     public String showEditForm(@PathVariable Long id, HttpSession session, Model model) {
         if (!checkAdmin(session, model)) {
@@ -115,7 +128,6 @@ public class AdminController {
         return "admin/edit-question";
     }
 
-    // Обновление вопроса
     @PostMapping("/edit-question/{id}")
     public String updateQuestion(@PathVariable Long id,
                                  @Valid @ModelAttribute("question") QuestionFormDTO dto,
@@ -136,7 +148,6 @@ public class AdminController {
         return "redirect:/admin/questions";
     }
 
-    // Удаление вопроса
     @PostMapping("/delete-question/{id}")
     public String deleteQuestion(@PathVariable Long id, HttpSession session, Model model) {
         if (!checkAdmin(session, model)) {
